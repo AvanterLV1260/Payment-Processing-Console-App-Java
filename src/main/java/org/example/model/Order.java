@@ -22,7 +22,15 @@ public class Order {
 
     public double calculateTotal(){
         //I should add up the total of every item then apply the discount
-        return 0;
+
+    double sum = 0.0;
+        for (OrderItem item : items){
+            sum += item.calculateTotal();
+
+        }
+return discount.apply(sum);
+
+
     }
 
     public void markAsPaid(){
