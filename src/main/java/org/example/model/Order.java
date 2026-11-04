@@ -21,7 +21,7 @@ public class Order {
     }
 
     public double calculateTotal(){
-        // TODO: calculate total from all order items (including discounts)
+        //I should add up the total of every item then apply the discount
         return 0;
     }
 
