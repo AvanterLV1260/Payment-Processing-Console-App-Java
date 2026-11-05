@@ -8,6 +8,7 @@ import org.example.payment.PaymentMethod;
 import org.example.payment.PaymentMethodFactory;
 import org.example.payment.PaymentProcessor;
 
+import javax.swing.*;
 import java.util.Scanner;
 
 public class ConsoleMenu {
@@ -26,7 +27,7 @@ public class ConsoleMenu {
 
             String option = scanner.nextLine();
 
-            switch (option){
+            switch (option) {
                 case "1" -> createOrder();
                 case "2" -> addItem();
                 case "3" -> viewOrder();
@@ -37,7 +38,7 @@ public class ConsoleMenu {
         }
     }
 
-    private void createOrder(){
+    private void createOrder() {
         System.out.println("Customer name:");
         String customerName = scanner.nextLine();
 
@@ -47,8 +48,11 @@ public class ConsoleMenu {
         System.out.println("Order created for " + customerName);
     }
 
-    private void addItem(){
-        // TODO: check if order exists
+    private void addItem() {
+        if (currentOrder == null) {
+            System.out.println("There is no current order");
+            return;
+        }
 
         System.out.println("Item name:");
         String itemName = scanner.nextLine();
@@ -63,22 +67,29 @@ public class ConsoleMenu {
         System.out.println("Item added to order");
     }
 
-    private void viewOrder(){
-        // TODO: check if order exists
+    private void viewOrder() {
+        if (currentOrder == null) {
+            System.out.println("There is no current order");
+            return;
+        }
 
         System.out.println("Customer: " + currentOrder.getCustomerName());
-        System.out.println("Status: " +  currentOrder.getStatus());
+        System.out.println("Status: " + currentOrder.getStatus());
         System.out.println("Items:");
 
-        for (OrderItem item : currentOrder.getItems()){
+        for (OrderItem item : currentOrder.getItems()) {
             System.out.println("- " + item);
         }
 
         System.out.println("Total: " + currentOrder.calculateTotal());
     }
 
-    private void payOrder(){
-        // TODO: check if order exists
+    private void payOrder() {
+        if (currentOrder == null) {
+            System.out.println("There is no current order");
+            return;
+        }
+
 
         System.out.println("""
                 Select payment method:
