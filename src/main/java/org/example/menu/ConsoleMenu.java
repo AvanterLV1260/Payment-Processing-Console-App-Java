@@ -24,14 +24,14 @@ public class ConsoleMenu {
         while(running){
             printMenu();
 
-            int option = Integer.parseInt(scanner.nextLine());
+            String option = scanner.nextLine();
 
             switch (option){
-                case 1 -> createOrder();
-                case 2 -> addItem();
-                case 3 -> viewOrder();
-                case 4 -> payOrder();
-                case 0 -> running = false;
+                case "1" -> createOrder();
+                case "2" -> addItem();
+                case "3" -> viewOrder();
+                case "4" -> payOrder();
+                case "0" -> running = false;
                 default -> System.out.println("Invalid option");
             }
         }
@@ -109,14 +109,22 @@ public class ConsoleMenu {
         return PaymentMethodFactory.createCreditCardPayment(cardNumber,cardHolderName);
     }
 
-    private  PaymentMethod createPaypalPayment(){
-        // TODO
-        return null;
+    private PaymentMethod createPaypalPayment() {
+        System.out.println("E-mail:");
+        String email = scanner.nextLine();
+
+        return PaymentMethodFactory.createPaypalPayment(email);
     }
 
-    private PaymentMethod createGiftCardPayment(){
-        // TODO
-        return null;
+    private PaymentMethod createGiftCardPayment() {
+        System.out.println("Gift card number:");
+        String code = scanner.nextLine();
+
+        System.out.println("Your balance:");
+        double balance = Double.parseDouble(scanner.nextLine());
+
+
+        return PaymentMethodFactory.createGiftCardPayment(code, balance);
     }
 
     private void printMenu(){

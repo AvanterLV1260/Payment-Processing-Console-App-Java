@@ -21,7 +21,7 @@ public class Order {
     }
 
     public double calculateTotal(){
-        //I should add up the total of every item then apply the discount
+        //I should add up the total of every item...then discount i guess..
 
     double sum = 0.0;
         for (OrderItem item : items){
