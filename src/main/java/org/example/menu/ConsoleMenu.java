@@ -97,14 +97,21 @@ public class ConsoleMenu {
                 2. PayPal
                 3. Gift Card
                 """);
-        int option = Integer.parseInt(scanner.nextLine());
+        String option = scanner.nextLine();
 
         PaymentMethod paymentMethod = switch(option){
-            case 1 -> createCreditCardPayment();
-            case 2 -> createPaypalPayment();
-            case 3 -> createGiftCardPayment();
-            default -> throw new IllegalArgumentException("Invalid payment method");
+            case "1" -> createCreditCardPayment();
+            case "2" -> createPaypalPayment();
+            case "3" -> createGiftCardPayment();
+            default -> null;
         };
+
+        if (paymentMethod == null) {
+            System.out.println("Invalid payment method");
+            return;
+        }
+
+        
 
         PaymentResult result = paymentProcessor.process(currentOrder, paymentMethod);
         System.out.println(result.getMessage());
