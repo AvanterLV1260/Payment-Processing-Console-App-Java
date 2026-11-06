@@ -111,7 +111,7 @@ public class ConsoleMenu {
             return;
         }
 
-        
+
 
         PaymentResult result = paymentProcessor.process(currentOrder, paymentMethod);
         System.out.println(result.getMessage());
