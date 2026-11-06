@@ -41,6 +41,10 @@ public class ConsoleMenu {
     private void createOrder() {
         System.out.println("Customer name:");
         String customerName = scanner.nextLine();
+        if (customerName.isBlank()) {
+            System.out.println("Customer name is required");
+            return;
+        }
 
         currentOrder = Order.builder()
                 .customerName(customerName)
@@ -51,6 +55,10 @@ public class ConsoleMenu {
     private void addItem() {
         if (currentOrder == null) {
             System.out.println("There is no current order");
+            return;
+        }
+        if (currentOrder.isPaid()) {
+            System.out.println("There is already a paid order, create a new one");
             return;
         }
 

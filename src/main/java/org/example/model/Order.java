@@ -16,7 +16,10 @@ public class Order {
     }
 
     public void addItem(OrderItem item){
-        // TODO: prevent adding items if order is already paid
+        //prevent adding items if order is already paid
+        if(isPaid()){
+            throw new IllegalArgumentException("Order is already paid");
+        }
         items.add(item);
     }
 
@@ -34,7 +37,10 @@ return discount.apply(sum);
     }
 
     public void markAsPaid(){
-        // TODO: validate order is not empty
+        //validate order is not empty
+        if(items.isEmpty()){
+            throw new IllegalArgumentException("Order is empty");
+        }
         this.status = OrderStatus.PAID;
     }
 
@@ -70,7 +76,10 @@ return discount.apply(sum);
             return this;
         }
         public Order build(){
-            // TODO: validate customerName
+            //validate customerName
+            if (customerName == null || customerName.isBlank()){
+                throw new IllegalArgumentException("Customer name is required");
+            }
             return new Order(this);
         }
     }

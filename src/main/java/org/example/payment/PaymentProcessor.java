@@ -5,8 +5,13 @@ import org.example.model.PaymentResult;
 
 public class PaymentProcessor {
     public PaymentResult process(Order order, PaymentMethod paymentMethod){
-        // TODO: prevent paying already paid orders
-        // TODO: prevent paying empty orders
+        if (order.isPaid()) {
+            return new PaymentResult(false, "Order is already paid");
+        }
+        if (order.getItems().isEmpty())
+            return new PaymentResult(false, "Order is empty");
+
+        //prevent paying empty orders
 
         PaymentResult result = paymentMethod.pay(order.calculateTotal());
 
