@@ -20,7 +20,7 @@ If the user types anything else other then 0-4, the app says "Invalid option" an
 
 ## Add item
 
-- The user writes the item name, price, quantity themselves.
+- The app shows a list of available items with prices. The user picks an item by number and enters the quantity.
 - Items can only be added if an order exists and if it's not paid yet.
 
 ## View order

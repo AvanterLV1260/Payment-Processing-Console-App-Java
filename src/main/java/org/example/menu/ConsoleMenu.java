@@ -1,6 +1,7 @@
 package org.example.menu;
 
 import org.example.config.AppConfig;
+import org.example.model.Item;
 import org.example.model.Order;
 import org.example.model.OrderItem;
 import org.example.model.PaymentResult;
@@ -8,7 +9,7 @@ import org.example.payment.PaymentMethod;
 import org.example.payment.PaymentMethodFactory;
 import org.example.payment.PaymentProcessor;
 
-import javax.swing.*;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleMenu {
@@ -16,13 +17,24 @@ public class ConsoleMenu {
     private final PaymentProcessor paymentProcessor = new PaymentProcessor();
 
     private Order currentOrder;
+    private static final String APPLE = "apple";
+    private static final String ORANGE = "orange";
+    private static final String PS5 = "ps5";
 
-    public void start(){
+    private static List<Item> availableItemsInStock = List.of
+            (
+                    new Item(APPLE, 1),
+                    new Item(ORANGE, 2),
+                    new Item(PS5, 600)
+            );
+
+
+    public void start() {
         AppConfig config = AppConfig.getInstance();
         System.out.println("Welcome to " + config.getApplicationName());
 
         boolean running = true;
-        while(running){
+        while (running) {
             printMenu();
 
             String option = scanner.nextLine();
@@ -62,16 +74,31 @@ public class ConsoleMenu {
             return;
         }
 
-        System.out.println("Item name:");
-        String itemName = scanner.nextLine();
+        int ListNumber = 1;
+        for (Item item : availableItemsInStock) {
+            System.out.println(ListNumber + ". " + item.toString());
+            ListNumber++;
+        }
 
-        System.out.println("Price:");
-        double price = Double.parseDouble(scanner.nextLine());
+        System.out.println("Choose item:");
+        String choice = scanner.nextLine();
+
+        Item selectedItem = switch (choice) {
+            case "1" -> availableItemsInStock.get(0);
+            case "2" -> availableItemsInStock.get(1);
+            case "3" -> availableItemsInStock.get(2);
+            default -> null;
+        };
+
+        if (selectedItem == null) {
+            System.out.println("Invalid item");
+            return;
+        }
 
         System.out.println("Quantity:");
         int quantity = Integer.parseInt(scanner.nextLine());
 
-        currentOrder.addItem(new OrderItem(itemName, price, quantity));
+        currentOrder.addItem(new OrderItem(selectedItem.getName(), selectedItem.getPrice(), quantity));
         System.out.println("Item added to order");
     }
 
@@ -107,7 +134,7 @@ public class ConsoleMenu {
                 """);
         String option = scanner.nextLine();
 
-        PaymentMethod paymentMethod = switch(option){
+        PaymentMethod paymentMethod = switch (option) {
             case "1" -> createCreditCardPayment();
             case "2" -> createPaypalPayment();
             case "3" -> createGiftCardPayment();
@@ -120,19 +147,18 @@ public class ConsoleMenu {
         }
 
 
-
         PaymentResult result = paymentProcessor.process(currentOrder, paymentMethod);
         System.out.println(result.getMessage());
     }
 
-    private PaymentMethod createCreditCardPayment(){
+    private PaymentMethod createCreditCardPayment() {
         System.out.println("Card number:");
-        String cardNumber =  scanner.nextLine();
+        String cardNumber = scanner.nextLine();
 
         System.out.println("Card holder name:");
-        String cardHolderName =  scanner.nextLine();
+        String cardHolderName = scanner.nextLine();
 
-        return PaymentMethodFactory.createCreditCardPayment(cardNumber,cardHolderName);
+        return PaymentMethodFactory.createCreditCardPayment(cardNumber, cardHolderName);
     }
 
     private PaymentMethod createPaypalPayment() {
@@ -153,7 +179,7 @@ public class ConsoleMenu {
         return PaymentMethodFactory.createGiftCardPayment(code, balance);
     }
 
-    private void printMenu(){
+    private void printMenu() {
         System.out.println("""
                 1. Create order
                 2. Add item to order

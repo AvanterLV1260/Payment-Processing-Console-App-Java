@@ -1,22 +1,21 @@
 package org.example.model;
 
-public class OrderItem {
-    private final String name;
-    private final double price;
+public class OrderItem extends Item {
     private final int quantity;
+    private final double totalPrice;
 
     public OrderItem(String name, double price, int quantity) {
-        this.name = name;
-        this.price = price;
+        super(name, price);
         this.quantity = quantity;
+        this.totalPrice = price * quantity;
     }
 
     public double calculateTotal(){
-        return price * quantity;
+        return totalPrice;
     }
 
     @Override
     public String toString(){
-        return name + " x" + quantity + " = " + calculateTotal();
+        return getName() + " x" + quantity + " = " + calculateTotal();
     }
 }
