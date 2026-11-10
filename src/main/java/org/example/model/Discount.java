@@ -1,14 +1,13 @@
 package org.example.model;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Discount {
     private final String code;
-    protected Discount(String code){
-        this.code = code;
-    }
-
-    public String getCode(){
-        return code;
-    }
 
     public abstract double apply(double originalAmount);
 }
