@@ -11,6 +11,7 @@ public class Order {
     private final String customerName;
     private final List<OrderItem> items;
     private OrderStatus status;
+    private double totalPriceAfterDiscount;
     private double totalPrice;
     private Discount discount = new NoDiscount();
 
@@ -33,10 +34,11 @@ public class Order {
         }
         items.add(item);
         totalPrice += item.calculateTotal();
+        totalPriceAfterDiscount = discount.apply(totalPrice);
     }
 
     public double calculateTotal() {
-        return discount.apply(totalPrice);
+        return totalPriceAfterDiscount;
     }
 
     public void markAsPaid(){
@@ -47,11 +49,13 @@ public class Order {
         this.status = OrderStatus.PAID;
     }
 
-    public void applyDiscount(Discount discount){
-        this.discount = discount;
-    }
 
     public boolean isPaid(){
         return this.status == OrderStatus.PAID;
     }
+    @Override
+    public String toString(){
+        return  "Name:"+customerName +", "+ "Status:" + status +  ", " + "Items:" + items+ ", " + "Total price:" + calculateTotal();
+    }
 }
+

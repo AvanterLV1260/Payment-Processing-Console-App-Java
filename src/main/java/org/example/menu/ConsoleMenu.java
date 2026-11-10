@@ -21,7 +21,7 @@ public class ConsoleMenu {
     private static final String ORANGE = "orange";
     private static final String PS5 = "ps5";
 
-    private static List<Item> availableItemsInStock = List.of
+    final private static List<Item> availableItemsInStock = List.of
             (
                     new Item(APPLE, 1),
                     new Item(ORANGE, 2),
@@ -41,13 +41,37 @@ public class ConsoleMenu {
 
             switch (option) {
                 case "1" -> createOrder();
-                case "2" -> addItem();
-                case "3" -> viewOrder();
-                case "4" -> payOrder();
                 case "0" -> running = false;
+                default -> System.out.println("Invalid option");
+
+
+            }
+        }
+    }
+
+    private void orderMenu() {
+        boolean orderMade = true;
+        while (orderMade) {
+            printOrderMenu();
+            String option = scanner.nextLine();
+            switch (option) {
+                case "1" -> addItem();
+                case "2" -> viewOrder();
+                case "3" -> payOrder();
+                case "4" -> orderMade = false;
                 default -> System.out.println("Invalid option");
             }
         }
+    }
+
+    private void printOrderMenu() {
+        System.out.println("""
+                1. Choose item
+                2. View order
+                3. Pay
+                4. Cancel/Go back
+                """);
+
     }
 
     private void createOrder() {
@@ -62,6 +86,7 @@ public class ConsoleMenu {
                 .customerName(customerName)
                 .build();
         System.out.println("Order created for " + customerName);
+        orderMenu();
     }
 
     private void addItem() {
@@ -107,16 +132,7 @@ public class ConsoleMenu {
             System.out.println("There is no current order");
             return;
         }
-
-        System.out.println("Customer: " + currentOrder.getCustomerName());
-        System.out.println("Status: " + currentOrder.getStatus());
-        System.out.println("Items:");
-
-        for (OrderItem item : currentOrder.getItems()) {
-            System.out.println("- " + item);
-        }
-
-        System.out.println("Total: " + currentOrder.calculateTotal());
+        System.out.println(currentOrder);
     }
 
     private void payOrder() {
@@ -182,9 +198,6 @@ public class ConsoleMenu {
     private void printMenu() {
         System.out.println("""
                 1. Create order
-                2. Add item to order
-                3. View order
-                4. Pay order
                 0. Exit
                 """);
     }
