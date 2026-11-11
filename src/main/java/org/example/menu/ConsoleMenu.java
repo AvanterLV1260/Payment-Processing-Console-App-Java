@@ -21,7 +21,7 @@ public class ConsoleMenu {
     private static final String ORANGE = "orange";
     private static final String PS5 = "ps5";
 
-    final private static List<Item> availableItemsInStock = List.of
+    private static final List<Item> availableItemsInStock = List.of
             (
                     new Item(APPLE, 1),
                     new Item(ORANGE, 2),
@@ -57,7 +57,12 @@ public class ConsoleMenu {
             switch (option) {
                 case "1" -> addItem();
                 case "2" -> viewOrder();
-                case "3" -> payOrder();
+                case "3" -> {
+                    payOrder();
+                    if (currentOrder.isPaid()) {
+                        orderMade = false;
+                    }
+                }
                 case "4" -> orderMade = false;
                 default -> System.out.println("Invalid option");
             }
