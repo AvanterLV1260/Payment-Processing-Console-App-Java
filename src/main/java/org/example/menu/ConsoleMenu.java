@@ -74,10 +74,12 @@ public class ConsoleMenu {
                 1. Choose item
                 2. View order
                 3. Pay
-                4. Cancel/Go back
+                4. Cancel
                 """);
-
     }
+
+
+
 
     private void createOrder() {
         System.out.println("Customer name:");
@@ -139,7 +141,15 @@ public class ConsoleMenu {
         }
         System.out.println(currentOrder);
     }
-
+    private void printPaymentMenu () {
+        System.out.println("""
+                    Select payment method:
+                    1. Credit Card
+                    2. PayPal
+                    3. Gift Card
+                    4. Back
+                    """);
+    }
     private void payOrder() {
         if (currentOrder == null) {
             System.out.println("There is no current order");
@@ -147,26 +157,28 @@ public class ConsoleMenu {
         }
 
 
-        System.out.println("""
-                Select payment method:
-                1. Credit Card
-                2. PayPal
-                3. Gift Card
-                """);
-        String option = scanner.nextLine();
 
-        PaymentMethod paymentMethod = switch (option) {
-            case "1" -> createCreditCardPayment();
-            case "2" -> createPaypalPayment();
-            case "3" -> createGiftCardPayment();
-            default -> null;
-        };
+        PaymentMethod paymentMethod = null;
 
-        if (paymentMethod == null) {
-            System.out.println("Invalid payment method");
-            return;
+        while (paymentMethod == null) {
+            printPaymentMenu();
+            String option = scanner.nextLine();
+
+            if (option.equals("4")) {
+                return;
+            }
+
+            paymentMethod = switch (option) {
+                case "1" -> createCreditCardPayment();
+                case "2" -> createPaypalPayment();
+                case "3" -> createGiftCardPayment();
+                default -> null;
+            };
+
+            if (paymentMethod == null) {
+                System.out.println("Invalid payment method");
+            }
         }
-
 
         PaymentResult result = paymentProcessor.process(currentOrder, paymentMethod);
         System.out.println(result.getMessage());
