@@ -15,6 +15,7 @@ public class AppConfig {
         this.applicationName = "Bootcamp Payment App";
         this.currency = "EUR";
         this.taxRate = 0.21;
+
     }
 
     public static AppConfig getInstance(){

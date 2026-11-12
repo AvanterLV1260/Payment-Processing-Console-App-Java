@@ -2,7 +2,7 @@ package org.example.model;
 
 import lombok.Builder;
 import lombok.Getter;
-
+import org.example.config.AppConfig;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +36,16 @@ public class Order {
         totalPrice += item.calculateTotal();
         totalPriceAfterDiscount = discount.apply(totalPrice);
     }
-
-    public double calculateTotal() {
-        return totalPriceAfterDiscount;
+    public double totalPriceWithTax(){
+        double taxRate = AppConfig.getInstance().getTaxRate();
+        double tax = totalPriceAfterDiscount * taxRate;
+        return totalPriceAfterDiscount + tax;
     }
+    public double calculateTotal() {
+        return totalPriceWithTax();
+    }
+
+
 
     public void markAsPaid(){
         //validate order is not empty

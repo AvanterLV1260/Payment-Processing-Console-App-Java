@@ -9,6 +9,7 @@ import org.example.payment.PaymentMethod;
 import org.example.payment.PaymentMethodFactory;
 import org.example.payment.PaymentProcessor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,6 +18,7 @@ public class ConsoleMenu {
     private final PaymentProcessor paymentProcessor = new PaymentProcessor();
 
     private Order currentOrder;
+    private final List<Order> completedOrders = new ArrayList<>();
     private static final String APPLE = "apple";
     private static final String ORANGE = "orange";
     private static final String PS5 = "ps5";
@@ -41,6 +43,7 @@ public class ConsoleMenu {
 
             switch (option) {
                 case "1" -> createOrder();
+                case "2" -> viewCompletedOrders();
                 case "0" -> running = false;
                 default -> System.out.println("Invalid option");
 
@@ -60,6 +63,7 @@ public class ConsoleMenu {
                 case "3" -> {
                     payOrder();
                     if (currentOrder.isPaid()) {
+                        completedOrders.add(currentOrder);
                         orderMade = false;
                     }
                 }
@@ -147,7 +151,8 @@ public class ConsoleMenu {
                     1. Credit Card
                     2. PayPal
                     3. Gift Card
-                    4. Back
+                    4. Crypto
+                    5. Back
                     """);
     }
     private void payOrder() {
@@ -164,7 +169,7 @@ public class ConsoleMenu {
             printPaymentMenu();
             String option = scanner.nextLine();
 
-            if (option.equals("4")) {
+            if (option.equals("5")) {
                 return;
             }
 
@@ -172,6 +177,7 @@ public class ConsoleMenu {
                 case "1" -> createCreditCardPayment();
                 case "2" -> createPaypalPayment();
                 case "3" -> createGiftCardPayment();
+                case "4" -> createCryptoPayment();
                 default -> null;
             };
 
@@ -211,10 +217,28 @@ public class ConsoleMenu {
 
         return PaymentMethodFactory.createGiftCardPayment(code, balance);
     }
+    private PaymentMethod createCryptoPayment() {
+        System.out.println("Crypto private key:");
+        String privateKey = scanner.nextLine();
+
+        return PaymentMethodFactory.createCryptoPayment(privateKey);
+    }
+
+    private void viewCompletedOrders() {
+        if (completedOrders.isEmpty()) {
+            System.out.println("No completed orders yet");
+            return;
+        }
+
+        for (Order order : completedOrders) {
+            System.out.println(order);
+        }
+    }
 
     private void printMenu() {
         System.out.println("""
                 1. Create order
+                2. View completed orders
                 0. Exit
                 """);
     }
